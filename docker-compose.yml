@@ -1,0 +1,146 @@
+# SportShop - entorno completo:  docker compose up --build
+#   Aplicación (nginx + React + API Gateway): http://localhost:8080
+#   Bandeja de correos de prueba (Mailpit):    http://localhost:8025
+#   Swagger UI de cada microservicio:          http://localhost:8081|8082|8083/swagger-ui.html
+name: sportshop
+
+x-service-env: &service-env
+  JWT_SECRET: ${JWT_SECRET:-demo-only-jwt-secret-please-change-in-env-file-0123456789}
+  INTERNAL_API_KEY: ${INTERNAL_API_KEY:-demo-only-internal-api-key}
+  CORS_ALLOWED_ORIGINS: http://localhost:${APP_PORT:-8080}
+  DB_HOST: mariadb
+  DB_PORT: "3306"
+  JAVA_OPTS: -XX:MaxRAMPercentage=75 -XX:+ExitOnOutOfMemoryError
+
+services:
+  mariadb:
+    image: mariadb:11.4
+    restart: unless-stopped
+    command: ["--character-set-server=utf8mb4", "--collation-server=utf8mb4_unicode_ci"]
+    environment:
+      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-demo-root}
+      USERS_DB_PASSWORD: ${USERS_DB_PASSWORD:-users_pass}
+      CATALOG_DB_PASSWORD: ${CATALOG_DB_PASSWORD:-catalog_pass}
+      ORDERS_DB_PASSWORD: ${ORDERS_DB_PASSWORD:-orders_pass}
+      TZ: UTC
+    volumes:
+      - mariadb-data:/var/lib/mysql
+      - ./database/init:/docker-entrypoint-initdb.d:ro
+    ports:
+      - "127.0.0.1:3306:3306"
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      start_period: 20s
+
+  mailpit:
+    image: axllent/mailpit:v1.27
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8025:8025"
+
+  user-service:
+    build:
+      context: ./backend
+      args:
+        SERVICE: user-service
+    image: sportshop/user-service:1.0.0
+    restart: unless-stopped
+    environment:
+      <<: *service-env
+      PORT: "8081"
+      DB_NAME: sportshop_users
+      DB_USER: users_svc
+      DB_PASSWORD: ${USERS_DB_PASSWORD:-users_pass}
+      MAIL_ENABLED: "true"
+      MAIL_HOST: mailpit
+      MAIL_PORT: "1025"
+      FRONTEND_URL: http://localhost:${APP_PORT:-8080}
+    ports:
+      - "127.0.0.1:8081:8081"
+    depends_on:
+      mariadb:
+        condition: service_healthy
+      mailpit:
+        condition: service_started
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:8081/actuator/health/readiness"]
+      interval: 10s
+      timeout: 3s
+      retries: 18
+      start_period: 30s
+
+  catalog-service:
+    build:
+      context: ./backend
+      args:
+        SERVICE: catalog-service
+    image: sportshop/catalog-service:1.0.0
+    restart: unless-stopped
+    environment:
+      <<: *service-env
+      PORT: "8082"
+      DB_NAME: sportshop_catalog
+      DB_USER: catalog_svc
+      DB_PASSWORD: ${CATALOG_DB_PASSWORD:-catalog_pass}
+    ports:
+      - "127.0.0.1:8082:8082"
+    depends_on:
+      mariadb:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:8082/actuator/health/readiness"]
+      interval: 10s
+      timeout: 3s
+      retries: 18
+      start_period: 30s
+
+  order-service:
+    build:
+      context: ./backend
+      args:
+        SERVICE: order-service
+    image: sportshop/order-service:1.0.0
+    restart: unless-stopped
+    environment:
+      <<: *service-env
+      PORT: "8083"
+      DB_NAME: sportshop_orders
+      DB_USER: orders_svc
+      DB_PASSWORD: ${ORDERS_DB_PASSWORD:-orders_pass}
+      CATALOG_SERVICE_URL: http://catalog-service:8082
+    ports:
+      - "127.0.0.1:8083:8083"
+    depends_on:
+      mariadb:
+        condition: service_healthy
+      catalog-service:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:8083/actuator/health/readiness"]
+      interval: 10s
+      timeout: 3s
+      retries: 18
+      start_period: 30s
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        VITE_MAILPIT_URL: http://localhost:8025
+    image: sportshop/frontend:1.0.0
+    restart: unless-stopped
+    ports:
+      - "${APP_PORT:-8080}:80"
+    depends_on:
+      user-service:
+        condition: service_healthy
+      catalog-service:
+        condition: service_healthy
+      order-service:
+        condition: service_healthy
+
+volumes:
+  mariadb-data:

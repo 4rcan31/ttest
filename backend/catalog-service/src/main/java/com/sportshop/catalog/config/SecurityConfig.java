@@ -21,6 +21,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         // El catálogo es público: la navegación anónima representa la mayor parte del tráfico.
                         .requestMatchers(HttpMethod.GET, "/api/products/**").permitAll()
+                        .requestMatchers(HttpMethod.HEAD, "/api/products/**").permitAll()
                         // Comunicación servicio-a-servicio (order-service); el gateway no expone /internal.
                         .requestMatchers("/internal/**").access(internalAccess)
                         .requestMatchers("/actuator/health/**", "/v3/api-docs/**",
