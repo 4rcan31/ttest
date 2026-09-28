@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -50,7 +51,16 @@ public class CartService {
         int newQuantity = item.getQuantity() + request.quantity();
         validateQuantity(product, newQuantity);
         item.setQuantity(newQuantity);
-        cartItemRepository.save(item);
+        try {
+            cartItemRepository.save(item);
+        } catch (DataIntegrityViolationException concurrentInsert) {
+            // Otra petición simultánea (p. ej. doble clic) ya creó la línea: se suma sobre la existente.
+            CartItem existing = findCartItem(userId, request.productId());
+            int mergedQuantity = existing.getQuantity() + request.quantity();
+            validateQuantity(product, mergedQuantity);
+            existing.setQuantity(mergedQuantity);
+            cartItemRepository.save(existing);
+        }
         return getCart(userId);
     }
 

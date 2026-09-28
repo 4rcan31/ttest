@@ -6,6 +6,7 @@ import java.util.Locale;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -59,7 +60,12 @@ public class AuthService {
         user.setBirthDate(request.birthDate());
         user.setPasswordHash(passwordEncoder.encode(request.password()));
         user.setRole(Role.CUSTOMER);
-        userRepository.save(user);
+        try {
+            userRepository.saveAndFlush(user);
+        } catch (DataIntegrityViolationException concurrentRegistration) {
+            // Dos registros simultáneos con el mismo correo: la restricción única decide.
+            throw ApiException.conflict("EMAIL_ALREADY_REGISTERED", "Ya existe una cuenta registrada con ese correo");
+        }
         log.info("Usuario registrado id={}", user.getId());
         return buildAuthResponse(user);
     }

@@ -2,6 +2,7 @@ package com.sportshop.user.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,7 +46,11 @@ public class UserService {
         user.setEmail(email);
         user.setShippingAddress(request.shippingAddress().trim());
         user.setBirthDate(request.birthDate());
-        return UserResponse.from(userRepository.saveAndFlush(user));
+        try {
+            return UserResponse.from(userRepository.saveAndFlush(user));
+        } catch (DataIntegrityViolationException concurrentUpdate) {
+            throw ApiException.conflict("EMAIL_ALREADY_REGISTERED", "Ya existe una cuenta registrada con ese correo");
+        }
     }
 
     @Transactional
