@@ -1,0 +1,294 @@
+openapi: 3.1.0
+info:
+  title: API de Clientes
+  version: 1.0.0
+  description: |
+    Obtener, almacenar, actualizar y eliminar la información de clientes identificados por un código único.
+
+    **Datos de tarjeta (PCI DSS):** el CVV se usa únicamente para validar la tarjeta con el procesador de
+    pagos y nunca se almacena ni se devuelve. El número de tarjeta se tokeniza y las respuestas solo lo
+    muestran enmascarado. Se recomienda enviar un `cardToken` obtenido en el frontend con los campos
+    seguros (hosted fields) del procesador de pagos.
+servers:
+  - url: https://api.ejemplo.com/api/v1
+security:
+  - bearerAuth: []
+tags:
+  - name: Clientes
+
+paths:
+  /customers:
+    post:
+      tags: [Clientes]
+      summary: Almacenar un cliente nuevo
+      operationId: createCustomer
+      parameters:
+        - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/CustomerCreate' }
+      responses:
+        '201':
+          description: Cliente creado
+          headers:
+            Location: { schema: { type: string }, description: URL del recurso creado }
+            ETag: { $ref: '#/components/headers/ETag' }
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Customer' }
+        '400': { $ref: '#/components/responses/ValidationError' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '409': { $ref: '#/components/responses/Conflict' }
+        '415': { $ref: '#/components/responses/UnsupportedMediaType' }
+        '422': { $ref: '#/components/responses/CardRejected' }
+        '429': { $ref: '#/components/responses/TooManyRequests' }
+
+  /customers/{customerCode}:
+    parameters:
+      - $ref: '#/components/parameters/CustomerCode'
+    get:
+      tags: [Clientes]
+      summary: Obtener la información del cliente
+      operationId: getCustomer
+      parameters:
+        - name: If-None-Match
+          in: header
+          required: false
+          schema: { type: string }
+      responses:
+        '200':
+          description: Cliente encontrado
+          headers:
+            ETag: { $ref: '#/components/headers/ETag' }
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Customer' }
+              example:
+                customerCode: CLI-000123
+                firstName: María José
+                lastName: Pérez López
+                address: Colonia Escalón, Calle La Mascota #123, San Salvador
+                email: maria.perez@correo.com
+                creditCard: { brand: VISA, maskedNumber: '**** **** **** 4242', last4: '4242' }
+                createdAt: '2026-01-10T14:02:11Z'
+                updatedAt: '2026-09-28T15:30:00Z'
+        '304': { description: El recurso no cambió desde el ETag indicado }
+        '400': { $ref: '#/components/responses/ValidationError' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '429': { $ref: '#/components/responses/TooManyRequests' }
+    put:
+      tags: [Clientes]
+      summary: Actualizar toda la información del cliente
+      operationId: replaceCustomer
+      parameters:
+        - $ref: '#/components/parameters/IfMatch'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/CustomerUpdate' }
+      responses:
+        '200':
+          description: Cliente actualizado
+          headers:
+            ETag: { $ref: '#/components/headers/ETag' }
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Customer' }
+        '400': { $ref: '#/components/responses/ValidationError' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '409': { $ref: '#/components/responses/Conflict' }
+        '412': { $ref: '#/components/responses/PreconditionFailed' }
+        '415': { $ref: '#/components/responses/UnsupportedMediaType' }
+        '422': { $ref: '#/components/responses/CardRejected' }
+        '429': { $ref: '#/components/responses/TooManyRequests' }
+    patch:
+      tags: [Clientes]
+      summary: Actualizar parcialmente al cliente (JSON Merge Patch, RFC 7396)
+      operationId: patchCustomer
+      parameters:
+        - $ref: '#/components/parameters/IfMatch'
+      requestBody:
+        required: true
+        content:
+          application/merge-patch+json:
+            schema: { $ref: '#/components/schemas/CustomerPatch' }
+            example: { address: 'Oficina: Torre Futura, Nivel 10, San Salvador' }
+      responses:
+        '200':
+          description: Cliente actualizado
+          headers:
+            ETag: { $ref: '#/components/headers/ETag' }
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Customer' }
+        '400': { $ref: '#/components/responses/ValidationError' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '409': { $ref: '#/components/responses/Conflict' }
+        '412': { $ref: '#/components/responses/PreconditionFailed' }
+        '415': { $ref: '#/components/responses/UnsupportedMediaType' }
+        '422': { $ref: '#/components/responses/CardRejected' }
+    delete:
+      tags: [Clientes]
+      summary: Eliminar la información del cliente
+      operationId: deleteCustomer
+      responses:
+        '204': { description: Cliente eliminado (sin cuerpo) }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '409': { $ref: '#/components/responses/Conflict' }
+        '429': { $ref: '#/components/responses/TooManyRequests' }
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'Token OAuth2. Scopes: customers:read (GET) y customers:write (POST, PUT, PATCH, DELETE).'
+
+  parameters:
+    CustomerCode:
+      name: customerCode
+      in: path
+      required: true
+      description: Código único asignado al cliente
+      schema: { type: string, pattern: '^CLI-[0-9]{6}$', example: CLI-000123 }
+    IfMatch:
+      name: If-Match
+      in: header
+      required: true
+      description: ETag obtenido en la última lectura (control de concurrencia optimista)
+      schema: { type: string, example: '"7"' }
+    IdempotencyKey:
+      name: Idempotency-Key
+      in: header
+      required: false
+      description: Permite reintentar la creación sin duplicar clientes
+      schema: { type: string, format: uuid }
+
+  headers:
+    ETag:
+      description: Versión actual del recurso
+      schema: { type: string, example: '"8"' }
+
+  schemas:
+    CardInput:
+      description: Se envía el número y el CVV, o bien un token del procesador de pagos (recomendado).
+      oneOf:
+        - type: object
+          title: Datos de tarjeta
+          required: [number, cvv]
+          properties:
+            number: { type: string, pattern: '^[0-9]{13,19}$', writeOnly: true, description: Validado con el algoritmo de Luhn }
+            cvv: { type: string, pattern: '^[0-9]{3,4}$', writeOnly: true, description: Nunca se almacena }
+        - type: object
+          title: Token
+          required: [cardToken]
+          properties:
+            cardToken: { type: string, example: tok_1Q2w3E4r5T6y }
+
+    MaskedCard:
+      type: object
+      readOnly: true
+      properties:
+        brand: { type: string, example: VISA }
+        maskedNumber: { type: string, example: '**** **** **** 4242' }
+        last4: { type: string, example: '4242' }
+
+    CustomerFields:
+      type: object
+      properties:
+        firstName: { type: string, minLength: 2, maxLength: 80 }
+        lastName: { type: string, minLength: 2, maxLength: 80 }
+        address: { type: string, minLength: 10, maxLength: 255 }
+        email: { type: string, format: email, maxLength: 120 }
+
+    CustomerCreate:
+      allOf:
+        - $ref: '#/components/schemas/CustomerFields'
+        - type: object
+          required: [customerCode, firstName, lastName, address, email, creditCard]
+          properties:
+            customerCode: { type: string, pattern: '^CLI-[0-9]{6}$' }
+            creditCard: { $ref: '#/components/schemas/CardInput' }
+
+    CustomerUpdate:
+      allOf:
+        - $ref: '#/components/schemas/CustomerFields'
+        - type: object
+          required: [firstName, lastName, address, email, creditCard]
+          properties:
+            creditCard: { $ref: '#/components/schemas/CardInput' }
+
+    CustomerPatch:
+      allOf:
+        - $ref: '#/components/schemas/CustomerFields'
+        - type: object
+          minProperties: 1
+          properties:
+            creditCard: { $ref: '#/components/schemas/CardInput' }
+
+    Customer:
+      allOf:
+        - $ref: '#/components/schemas/CustomerFields'
+        - type: object
+          properties:
+            customerCode: { type: string }
+            creditCard: { $ref: '#/components/schemas/MaskedCard' }
+            createdAt: { type: string, format: date-time }
+            updatedAt: { type: string, format: date-time }
+
+    Problem:
+      type: object
+      description: RFC 9457 Problem Details
+      properties:
+        type: { type: string, format: uri }
+        title: { type: string }
+        status: { type: integer }
+        detail: { type: string }
+        instance: { type: string }
+        errors:
+          type: object
+          additionalProperties: { type: string }
+
+  responses:
+    ValidationError:
+      description: Datos inválidos
+      content: { application/problem+json: { schema: { $ref: '#/components/schemas/Problem' } } }
+    Unauthorized:
+      description: Token ausente, inválido o expirado
+      content: { application/problem+json: { schema: { $ref: '#/components/schemas/Problem' } } }
+    Forbidden:
+      description: El token no tiene el scope requerido
+      content: { application/problem+json: { schema: { $ref: '#/components/schemas/Problem' } } }
+    NotFound:
+      description: No existe un cliente con ese código
+      content: { application/problem+json: { schema: { $ref: '#/components/schemas/Problem' } } }
+    Conflict:
+      description: Conflicto con el estado actual (código o correo ya registrado, operaciones pendientes)
+      content: { application/problem+json: { schema: { $ref: '#/components/schemas/Problem' } } }
+    PreconditionFailed:
+      description: El recurso fue modificado por otro proceso (If-Match no coincide)
+      content: { application/problem+json: { schema: { $ref: '#/components/schemas/Problem' } } }
+    UnsupportedMediaType:
+      description: Content-Type no soportado
+      content: { application/problem+json: { schema: { $ref: '#/components/schemas/Problem' } } }
+    CardRejected:
+      description: El procesador de pagos rechazó la tarjeta
+      content: { application/problem+json: { schema: { $ref: '#/components/schemas/Problem' } } }
+    TooManyRequests:
+      description: Límite de solicitudes excedido
+      headers:
+        Retry-After: { schema: { type: integer } }
+      content: { application/problem+json: { schema: { $ref: '#/components/schemas/Problem' } } }

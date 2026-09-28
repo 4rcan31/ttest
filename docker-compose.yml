@@ -39,7 +39,8 @@ services:
     image: axllent/mailpit:v1.27
     restart: unless-stopped
     ports:
-      - "127.0.0.1:8025:8025"
+      - "127.0.0.1:8025:8025"   # interfaz web
+      - "127.0.0.1:1025:1025"   # SMTP (usado al ejecutar user-service fuera de Docker)
 
   user-service:
     build:
