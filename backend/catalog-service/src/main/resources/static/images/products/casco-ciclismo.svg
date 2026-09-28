@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-label="Casco de ciclismo">
+  <title>Casco de ciclismo</title>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#e0f2fe"/>
+      <stop offset="1" stop-color="#7dd3fc"/>
+    </linearGradient>
+    <radialGradient id="shine" cx="0.35" cy="0.3" r="0.7">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="400" height="400" fill="url(#bg)"/>
+  <circle cx="330" cy="70" r="90" fill="#ffffff" opacity="0.25"/>
+  <circle cx="60" cy="350" r="70" fill="#ffffff" opacity="0.2"/>
+  <ellipse cx="200" cy="335" rx="120" ry="14" fill="#0f172a" opacity="0.12"/>
+  <path d="M72,236 C72,150 140,100 214,100 C290,100 336,156 336,220 C336,236 326,246 310,246 L96,250 C82,250 72,246 72,236 Z" fill="#0ea5e9" stroke="#1f2937" stroke-width="6" stroke-linejoin="round"/>
+  <path d="M110,150 L150,176 M156,122 L182,164 M214,110 L222,160 M270,122 L256,164 M310,160 L284,184" stroke="#1f2937" stroke-width="12" stroke-linecap="round"/>
+  <path d="M88,222 C150,206 270,204 330,214" fill="none" stroke="#ffffff" stroke-width="8" stroke-linecap="round" opacity="0.6"/>
+  <path d="M296,238 L352,250 C356,262 344,268 332,266 L290,254 Z" fill="#1f2937"/>
+  <path d="M120,250 C120,290 150,310 180,300" fill="none" stroke="#1f2937" stroke-width="6" stroke-linecap="round"/>
+</svg>

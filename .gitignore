@@ -1,2 +1,18 @@
 .claude/
 .env
+
+# Java / Maven
+target/
+*.class
+*.log
+
+# Node / Vite
+node_modules/
+dist/
+coverage/
+
+# IDE / SO
+.idea/
+.vscode/
+*.iml
+.DS_Store

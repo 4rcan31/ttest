@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-label="Guantes de portero">
+  <title>Guantes de portero</title>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#dcfce7"/>
+      <stop offset="1" stop-color="#86efac"/>
+    </linearGradient>
+    <radialGradient id="shine" cx="0.35" cy="0.3" r="0.7">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="400" height="400" fill="url(#bg)"/>
+  <circle cx="330" cy="70" r="90" fill="#ffffff" opacity="0.25"/>
+  <circle cx="60" cy="350" r="70" fill="#ffffff" opacity="0.2"/>
+  <ellipse cx="200" cy="335" rx="120" ry="14" fill="#0f172a" opacity="0.12"/>
+  <g transform="translate(140,0) scale(-1,1)">
+  <rect x="-52" y="238" width="104" height="58" rx="14" fill="#1f2937"/>
+  <rect x="-52" y="252" width="104" height="14" fill="#f97316"/>
+  <path d="M-50,242 L-50,160 C-50,146 -26,146 -26,160 L-26,112 C-26,96 -2,96 -2,112 L-2,104 C-2,88 22,88 22,104 L22,116 C22,100 46,100 46,116 L46,190 C62,176 84,188 74,206 L52,244 Z" fill="#22c55e" stroke="#1f2937" stroke-width="5" stroke-linejoin="round"/>
+  <path d="M-38,200 L34,200" stroke="#ffffff" stroke-width="6" stroke-linecap="round" opacity="0.8"/>
+  <path d="M-38,216 L34,216" stroke="#ffffff" stroke-width="6" stroke-linecap="round" opacity="0.5"/>
+  </g>
+  <g transform="translate(262,0) scale(1,1)">
+  <rect x="-52" y="238" width="104" height="58" rx="14" fill="#1f2937"/>
+  <rect x="-52" y="252" width="104" height="14" fill="#f97316"/>
+  <path d="M-50,242 L-50,160 C-50,146 -26,146 -26,160 L-26,112 C-26,96 -2,96 -2,112 L-2,104 C-2,88 22,88 22,104 L22,116 C22,100 46,100 46,116 L46,190 C62,176 84,188 74,206 L52,244 Z" fill="#22c55e" stroke="#1f2937" stroke-width="5" stroke-linejoin="round"/>
+  <path d="M-38,200 L34,200" stroke="#ffffff" stroke-width="6" stroke-linecap="round" opacity="0.8"/>
+  <path d="M-38,216 L34,216" stroke="#ffffff" stroke-width="6" stroke-linecap="round" opacity="0.5"/>
+  </g>
+</svg>

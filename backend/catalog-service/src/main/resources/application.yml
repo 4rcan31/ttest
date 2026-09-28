@@ -1,0 +1,48 @@
+server:
+  port: ${PORT:8082}
+  shutdown: graceful
+
+spring:
+  application:
+    name: catalog-service
+  datasource:
+    url: jdbc:mariadb://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:sportshop_catalog}
+    username: ${DB_USER:catalog_svc}
+    password: ${DB_PASSWORD:catalog_pass}
+    hikari:
+      maximum-pool-size: 10
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate.jdbc.time_zone: UTC
+  flyway:
+    enabled: true
+  web:
+    resources:
+      # Solo se publican las imágenes mediante WebConfig; se desactiva el mapeo estático por defecto.
+      add-mappings: false
+
+app:
+  jwt:
+    secret: ${JWT_SECRET:dev-only-secret-change-me-at-least-32-bytes-long!!}
+    issuer: sportshop
+  internal:
+    api-key: ${INTERNAL_API_KEY:dev-only-internal-key}
+  cors:
+    allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:5173,http://localhost:8080}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      probes:
+        enabled: true
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html

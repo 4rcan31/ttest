@@ -1,0 +1,4 @@
+com.sportshop.common.security.JwtSecurityAutoConfiguration
+com.sportshop.common.web.WebAutoConfiguration
+com.sportshop.common.web.OpenApiAutoConfiguration
+com.sportshop.common.internal.InternalApiAutoConfiguration

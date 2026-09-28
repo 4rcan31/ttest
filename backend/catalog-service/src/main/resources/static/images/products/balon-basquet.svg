@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-label="Balón de básquetbol">
+  <title>Balón de básquetbol</title>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fef3c7"/>
+      <stop offset="1" stop-color="#fcd34d"/>
+    </linearGradient>
+    <radialGradient id="shine" cx="0.35" cy="0.3" r="0.7">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="400" height="400" fill="url(#bg)"/>
+  <circle cx="330" cy="70" r="90" fill="#ffffff" opacity="0.25"/>
+  <circle cx="60" cy="350" r="70" fill="#ffffff" opacity="0.2"/>
+  <ellipse cx="200" cy="335" rx="120" ry="14" fill="#0f172a" opacity="0.12"/>
+  <circle cx="200" cy="195" r="115" fill="#f97316" stroke="#1f2937" stroke-width="6"/>
+  <line x1="85" y1="195" x2="315" y2="195" stroke="#1f2937" stroke-width="6"/>
+  <line x1="200" y1="80" x2="200" y2="310" stroke="#1f2937" stroke-width="6"/>
+  <path d="M120,113 C170,155 170,235 120,277" fill="none" stroke="#1f2937" stroke-width="6"/>
+  <path d="M280,113 C230,155 230,235 280,277" fill="none" stroke="#1f2937" stroke-width="6"/>
+  <circle cx="200" cy="195" r="115" fill="url(#shine)"/>
+</svg>

@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-label="Balón de fútbol">
+  <title>Balón de fútbol</title>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#dcfce7"/>
+      <stop offset="1" stop-color="#86efac"/>
+    </linearGradient>
+    <radialGradient id="shine" cx="0.35" cy="0.3" r="0.7">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="400" height="400" fill="url(#bg)"/>
+  <circle cx="330" cy="70" r="90" fill="#ffffff" opacity="0.25"/>
+  <circle cx="60" cy="350" r="70" fill="#ffffff" opacity="0.2"/>
+  <ellipse cx="200" cy="335" rx="120" ry="14" fill="#0f172a" opacity="0.12"/>
+  <defs><clipPath id="ball"><circle cx="200" cy="195" r="115"/></clipPath></defs>
+  <circle cx="200" cy="195" r="115" fill="#ffffff" stroke="#1f2937" stroke-width="6"/>
+  <g clip-path="url(#ball)">
+  <polygon points="200.0,157.0 236.1,183.3 222.3,225.7 177.7,225.7 163.9,183.3" fill="#1f2937"/>
+  <polygon points="200.0,126.0 165.8,101.1 178.8,60.9 221.2,60.9 234.2,101.1" fill="#1f2937"/>
+  <line x1="200.0" y1="157.0" x2="200.0" y2="123.0" stroke="#1f2937" stroke-width="4"/>
+  <polygon points="265.6,173.7 278.7,133.4 321.0,133.4 334.1,173.7 299.9,198.6" fill="#1f2937"/>
+  <line x1="236.1" y1="183.3" x2="268.5" y2="172.8" stroke="#1f2937" stroke-width="4"/>
+  <polygon points="240.6,250.8 282.9,250.8 296.0,291.1 261.7,315.9 227.5,291.1" fill="#1f2937"/>
+  <line x1="222.3" y1="225.7" x2="242.3" y2="253.2" stroke="#1f2937" stroke-width="4"/>
+  <polygon points="159.4,250.8 172.5,291.1 138.3,315.9 104.0,291.1 117.1,250.8" fill="#1f2937"/>
+  <line x1="177.7" y1="225.7" x2="157.7" y2="253.2" stroke="#1f2937" stroke-width="4"/>
+  <polygon points="134.4,173.7 100.1,198.6 65.9,173.7 79.0,133.4 121.3,133.4" fill="#1f2937"/>
+  <line x1="163.9" y1="183.3" x2="131.5" y2="172.8" stroke="#1f2937" stroke-width="4"/>
+  </g>
+  <circle cx="200" cy="195" r="115" fill="url(#shine)"/>
+</svg>

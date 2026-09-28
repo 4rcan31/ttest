@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-label="Tubo de pelotas de tenis">
+  <title>Tubo de pelotas de tenis</title>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ecfccb"/>
+      <stop offset="1" stop-color="#bef264"/>
+    </linearGradient>
+    <radialGradient id="shine" cx="0.35" cy="0.3" r="0.7">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="400" height="400" fill="url(#bg)"/>
+  <circle cx="330" cy="70" r="90" fill="#ffffff" opacity="0.25"/>
+  <circle cx="60" cy="350" r="70" fill="#ffffff" opacity="0.2"/>
+  <ellipse cx="200" cy="335" rx="120" ry="14" fill="#0f172a" opacity="0.12"/>
+  <rect x="138" y="52" width="124" height="28" rx="10" fill="#e11d48" stroke="#1f2937" stroke-width="5"/>
+  <rect x="144" y="78" width="112" height="262" rx="24" fill="#ffffff" fill-opacity="0.55" stroke="#1f2937" stroke-width="5"/>
+  <circle cx="200" cy="130" r="46" fill="#d9f99d" stroke="#1f2937" stroke-width="4"/>
+  <path d="M160,108 C186,122 186,138 160,152 M240,108 C214,122 214,138 240,152" fill="none" stroke="#ffffff" stroke-width="5"/>
+  <circle cx="200" cy="208" r="46" fill="#d9f99d" stroke="#1f2937" stroke-width="4"/>
+  <path d="M160,186 C186,200 186,216 160,230 M240,186 C214,200 214,216 240,230" fill="none" stroke="#ffffff" stroke-width="5"/>
+  <circle cx="200" cy="286" r="46" fill="#d9f99d" stroke="#1f2937" stroke-width="4"/>
+  <path d="M160,264 C186,278 186,294 160,308 M240,264 C214,278 214,294 240,308" fill="none" stroke="#ffffff" stroke-width="5"/>
+  <rect x="156" y="90" width="10" height="236" rx="5" fill="#ffffff" opacity="0.6"/>
+</svg>

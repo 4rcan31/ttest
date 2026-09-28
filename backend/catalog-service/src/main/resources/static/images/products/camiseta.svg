@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-label="Camiseta deportiva">
+  <title>Camiseta deportiva</title>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#e0e7ff"/>
+      <stop offset="1" stop-color="#a5b4fc"/>
+    </linearGradient>
+    <radialGradient id="shine" cx="0.35" cy="0.3" r="0.7">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="400" height="400" fill="url(#bg)"/>
+  <circle cx="330" cy="70" r="90" fill="#ffffff" opacity="0.25"/>
+  <circle cx="60" cy="350" r="70" fill="#ffffff" opacity="0.2"/>
+  <ellipse cx="200" cy="335" rx="120" ry="14" fill="#0f172a" opacity="0.12"/>
+  <path d="M150,92 C170,108 230,108 250,92 L318,122 L346,184 L296,204 L286,180 L286,330 L114,330 L114,180 L104,204 L54,184 L82,122 Z" fill="#2563eb" stroke="#1f2937" stroke-width="5" stroke-linejoin="round"/>
+  <path d="M150,92 C170,124 230,124 250,92" fill="none" stroke="#1e3a8a" stroke-width="8"/>
+  <path d="M114,230 L286,230" stroke="#60a5fa" stroke-width="10"/>
+  <path d="M160,176 L240,176 L220,206 L180,206 Z" fill="#ffffff" opacity="0.9"/>
+</svg>
