@@ -1,0 +1,5 @@
+# Scripts que se ejecutan en Linux (contenedores, WSL, Git Bash): siempre LF, aunque el
+# repositorio se clone en Windows con core.autocrlf=true. Con CRLF el shebang termina en
+# "\r" y el script no arranca.
+*.sh  text eol=lf
+mvnw  text eol=lf
