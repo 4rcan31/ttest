@@ -12,6 +12,10 @@
   obsoletos que estaban en la caché de la CPU.
 - Es **reentrante:** un hilo que ya tiene el candado puede volver a entrar sin bloquearse.
 
+
+En otras palabras synchronized en Java controla el acceso concurrente a métodos o bloques de código. Evita que varios hilos ejecuten simultáneamente una sección crítica sobre el mismo recurso compartido, ayuda a prevenir condiciones de carrera y problemas de consistencia de datos. synchronized hace que por un lock/monitor un hilo pueda escribir a la vez
+
+
 Formas de uso:
 
 ```java

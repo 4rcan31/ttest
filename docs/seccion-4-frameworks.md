@@ -59,6 +59,7 @@ FROM nginx:latest
 
 # Se eliminan los archivos por defecto para que el contenedor sirva solo nuestro index.html.
 RUN rm -rf /usr/share/nginx/html/*
+# De nuestro host hacia el contenedor
 COPY index.html /usr/share/nginx/html/index.html
 
 EXPOSE 80
